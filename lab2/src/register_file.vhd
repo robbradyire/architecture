@@ -5,15 +5,18 @@ use IEEE.STD_LOGIC_UNSIGNED.ALL;
 
 entity register_file is
 Port (
-		src_s0 : in std_logic;
-		src_s1 : in std_logic;
-		src_s2 : in std_logic;
-		des_A0 : in std_logic;
-		des_A1 : in std_logic;
-		des_A2 : in std_logic;
+		A_source_select0 : in std_logic;
+		A_source_select1 : in std_logic;
+		A_source_select2 : in std_logic;
+		B_source_select0 : in std_logic;
+		B_source_select1 : in std_logic;
+		B_source_select2 : in std_logic;
+		dest_select0 : in std_logic;
+		dest_select1 : in std_logic;
+		dest_select2 : in std_logic;
 		Clk : in std_logic;
-		data_src : in std_logic;
-		data : in std_logic_vector(15 downto 0);
+		read_write : in std_logic;
+		data_in : in std_logic_vector(15 downto 0);
 		reg0 : out std_logic_vector(15 downto 0);
 		reg1 : out std_logic_vector(15 downto 0);
 		reg2 : out std_logic_vector(15 downto 0);
@@ -21,7 +24,9 @@ Port (
 		reg4 : out std_logic_vector(15 downto 0);
 		reg5 : out std_logic_vector(15 downto 0);
 		reg6 : out std_logic_vector(15 downto 0);
-		reg7 : out std_logic_vector(15 downto 0)
+		reg7 : out std_logic_vector(15 downto 0);
+		A_output_data : out std_logic_vector(15 downto 0);
+		B_output_data : out std_logic_vector(15 downto 0)
 	);
 end register_file;
 
@@ -31,18 +36,19 @@ architecture Behavioral of register_file is
 	COMPONENT reg16
 	PORT(
 			D : IN std_logic_vector(15 downto 0);
-			load : IN std_logic;
+			load_A : IN std_logic;
+			load_B : IN std_logic;
 			Clk : IN std_logic;
 			Q : OUT std_logic_vector(15 downto 0)
 			);
 	END COMPONENT;
 	
-	-- 3 to 8 Decoder
+	-- 3 to 8 Decoder for destination
 	COMPONENT decoder_3to8
 	PORT(
-			A0 : IN std_logic;
-			A1 : IN std_logic;
-			A2 : IN std_logic;
+			S0 : IN std_logic;
+			S1 : IN std_logic;
+			S2 : IN std_logic;
 			Q0 : OUT std_logic;
 			Q1 : OUT std_logic;
 			Q2 : OUT std_logic;
@@ -54,17 +60,7 @@ architecture Behavioral of register_file is
 			);
 	END COMPONENT;
 	
-	-- 2 to 1 line multiplexer
-	COMPONENT mux2_16bit
-	PORT(
-			In0 : IN std_logic_vector(15 downto 0);
-			In1 : IN std_logic_vector(15 downto 0);
-			s : IN std_logic;
-			Z : OUT std_logic_vector(15 downto 0)
-			);
-	END COMPONENT;
-	
-	-- 8 to 1 line multiplexer
+	-- 8 to 1 line multiplexer for sources
 	COMPONENT mux8_16bit
 	PORT(
 			In0 : IN std_logic_vector(15 downto 0);
@@ -83,74 +79,84 @@ architecture Behavioral of register_file is
 	END COMPONENT;
 	
 	-- signals
-	signal load_reg0, load_reg1, load_reg2, load_reg3, load_reg4, load_reg5, load_reg6, load_reg7 : std_logic;
+	signal load_reg0, load_reg1, load_reg2, load_reg3,
+			load_reg4, load_reg5, load_reg6, load_reg7 : std_logic;
+
 	signal reg0_q, reg1_q, reg2_q, reg3_q, reg4_q,reg5_q,reg6_q,reg7_q,
-	data_src_mux_out, src_reg : std_logic_vector(15 downto 0);
+			A_out, B_out : std_logic_vector(15 downto 0);
 	begin
 	-- port maps ;-)
 
 	-- register 0
 	reg00: reg16 PORT MAP(
-		D => data_src_mux_out,
-		load => load_reg0,
+		D => data_in,
+		load_A => load_reg0,
+		load_B => read_write,
 		Clk => Clk,
 		Q => reg0_q
 	);
 	-- register 1
 	reg01: reg16 PORT MAP(
-		D => data_src_mux_out,
-		load => load_reg1,
+		D => data_in,
+		load_A => load_reg1,
+		load_B => read_write,
 		Clk => Clk,
 		Q => reg1_q
 	);
 	-- register 2
 	reg02: reg16 PORT MAP(
-		D => data_src_mux_out,
-		load => load_reg2,
+		D => data_in,
+		load_A => load_reg2,
+		load_B => read_write,
 		Clk => Clk,
 		Q => reg2_q
 	);
 	-- register 3
 	reg03: reg16 PORT MAP(
-		D => data_src_mux_out,
-		load => load_reg3,
+		D => data_in,
+		load_A => load_reg3,
+		load_B => read_write,
 		Clk => Clk,
 		Q => reg3_q
 	);
 	-- register 4
 	reg04: reg16 PORT MAP(
-		D => data_src_mux_out,
-		load => load_reg4,
+		D => data_in,
+		load_A => load_reg4,
+		load_B => read_write,
 		Clk => Clk,
 		Q => reg4_q
 	);
 	-- register 5
 	reg05: reg16 PORT MAP(
-		D => data_src_mux_out,
-		load => load_reg5,
+		D => data_in,
+		load_A => load_reg5,
+		load_B => read_write,
 		Clk => Clk,
 		Q => reg5_q
 	);
 	-- register 6
 	reg06: reg16 PORT MAP(
-		D => data_src_mux_out,
-		load => load_reg6,
+		D => data_in,
+		load_A => load_reg6,
+		load_B => read_write,
 		Clk => Clk,
 		Q => reg6_q
 	);
 	-- register 7
 	reg07: reg16 PORT MAP(
-		D => data_src_mux_out,
-		load => load_reg7,
+		D => data_in,
+		load_A => load_reg7,
+		load_B => read_write,
 		Clk => Clk,
 		Q => reg7_q
 	);
 
 	-- Destination register decoder
 	des_decoder_3to8: decoder_3to8 PORT MAP(
-		A0 => des_A0,
-		A1 => des_A1,
-		A2 => des_A2,
+		S0 => dest_select0,
+		S1 => dest_select1,
+		S2 => dest_select2,
 		Q0 => load_reg0,
 		Q1 => load_reg1,
 		Q2 => load_reg2,
@@ -161,16 +167,8 @@ architecture Behavioral of register_file is
 		Q7 => load_reg7
 	);
 
-	-- 2 to 1 Data source multiplexer
-	data_src_mux2_16bit: mux2_16bit PORT MAP(
-		In0 => data,
-		In1 => src_reg,
-		s => data_src,
-		Z => data_src_mux_out
-	);
-
-	-- 8 to 1 source register multiplexer
-	Inst_mux8_16bit: mux8_16bit PORT MAP(
+	-- 8 to 1 source register multiplexer for A
+	A_mux8_16bit: mux8_16bit PORT MAP(
 		In0 => reg0_q,
 		In1 => reg1_q,
 		In2 => reg2_q,
@@ -179,10 +177,26 @@ architecture Behavioral of register_file is
 		In5 => reg5_q,
 		In6 => reg6_q,
 		In7 => reg7_q,
-		S0 => src_s0,
-		S1 => src_s1,
-		S2 => src_s2,
-		Z => src_reg
+		S0 => A_source_select0,
+		S1 => A_source_select1,
+		S2 => A_source_select2,
+		Z => A_out
+	);
+
+	-- 8 to 1 source register multiplexer for B
+	B_mux8_16bit: mux8_16bit PORT MAP(
+		In0 => reg0_q,
+		In1 => reg1_q,
+		In2 => reg2_q,
+		In3 => reg3_q,
+		In4 => reg4_q,
+		In5 => reg5_q,
+		In6 => reg6_q,
+		In7 => reg7_q,
+		S0 => B_source_select0,
+		S1 => B_source_select1,
+		S2 => B_source_select2,
+		Z => B_out
 	);
 
 	reg0 <= reg0_q;
@@ -193,5 +207,7 @@ architecture Behavioral of register_file is
 	reg5 <= reg5_q;
 	reg6 <= reg6_q;
 	reg7 <= reg7_q;
+	A_output_data <= A_out;
+	B_output_data <= B_out;
 
 end Behavioral;
