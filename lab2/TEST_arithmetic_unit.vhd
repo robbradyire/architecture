@@ -1,36 +1,5 @@
---------------------------------------------------------------------------------
--- Company: 
--- Engineer:
---
--- Create Date:   15:04:31 03/11/2015
--- Design Name:   
--- Module Name:   /home/rob/Documents/architecture/lab2/TEST_arithmetic_unit.vhd
--- Project Name:  lab2
--- Target Device:  
--- Tool versions:  
--- Description:   
--- 
--- VHDL Test Bench Created by ISE for module: arithmetic_unit
--- 
--- Dependencies:
--- 
--- Revision:
--- Revision 0.01 - File Created
--- Additional Comments:
---
--- Notes: 
--- This testbench has been automatically generated using types std_logic and
--- std_logic_vector for the ports of the unit under test.  Xilinx recommends
--- that these types always be used for the top-level I/O of a design in order
--- to guarantee that the testbench will bind correctly to the post-implementation 
--- simulation model.
---------------------------------------------------------------------------------
 LIBRARY ieee;
 USE ieee.std_logic_1164.ALL;
- 
--- Uncomment the following library declaration if using
--- arithmetic functions with Signed or Unsigned values
---USE ieee.numeric_std.ALL;
  
 ENTITY TEST_arithmetic_unit IS
 END TEST_arithmetic_unit;
@@ -95,8 +64,40 @@ BEGIN
 		carry_in <= '1';
 		wait for 100 ns;
 		
+		-- test S = "11"
+		carry_in <= '0';
+		sel0 <= '1';
+		sel1 <= '1';
+		wait for 100 ns;
 		
-
+		-- test carry_in
+		carry_in <= '1';
+		wait for 100 ns;
+		
+		-- test S = "01"
+		carry_in <= '0';
+		A_in <= x"FFFE";
+		B_in <= x"0002";
+		sel0 <= '1';
+		sel1 <= '0';
+		wait for 100 ns;
+		
+		-- test carry_in
+		carry_in <= '1';
+		wait for 100 ns;
+		
+		-- test S = "10"
+		carry_in <= '0';
+		A_in <= x"FFFE";
+		B_in <= x"FFFE";
+		sel0 <= '0';
+		sel1 <= '1';
+		wait for 100 ns;
+		
+		-- test carry_in
+		carry_in <= '1';
+		wait for 100 ns;
+		
       wait;
    end process;
 
