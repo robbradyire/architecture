@@ -15,7 +15,7 @@ end function_unit;
 architecture Behavioral of function_unit is
 begin
 	data_out <= data_A after 20 ns;
-	carry_out <= carry_in after 20 ns;
+	carry_out <= '1' after 20 ns;
 	overflow <= '0' after 20 ns;
 	negative <= '0' after 20 ns;
 	zero <= '0' after 20 ns;
