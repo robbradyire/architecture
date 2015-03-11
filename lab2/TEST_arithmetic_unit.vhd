@@ -46,7 +46,7 @@ ARCHITECTURE behavior OF TEST_arithmetic_unit IS
          sel0 : IN  std_logic;
          sel1 : IN  std_logic;
          carry_in : IN  std_logic;
-         carry_out : IN  std_logic;
+         carry_out : OUT  std_logic;
          result : OUT  std_logic_vector(15 downto 0)
         );
     END COMPONENT;
@@ -62,10 +62,7 @@ ARCHITECTURE behavior OF TEST_arithmetic_unit IS
 
  	--Outputs
    signal result : std_logic_vector(15 downto 0);
-   -- No clocks detected in port list. Replace <clock> below with 
-   -- appropriate port name 
- 
-   constant <clock>_period : time := 10 ns;
+	
  
 BEGIN
  
@@ -79,26 +76,26 @@ BEGIN
           carry_out => carry_out,
           result => result
         );
-
-   -- Clock process definitions
-   <clock>_process :process
-   begin
-		<clock> <= '0';
-		wait for <clock>_period/2;
-		<clock> <= '1';
-		wait for <clock>_period/2;
-   end process;
  
 
    -- Stimulus process
    stim_proc: process
    begin		
-      -- hold reset state for 100 ns.
       wait for 100 ns;	
-
-      wait for <clock>_period*10;
-
-      -- insert stimulus here 
+		
+		-- test S = "00"
+		A_in <= x"FFFF";
+		B_in <= x"0000";
+		sel0 <= '0';
+		sel1 <= '0';
+		carry_in <= '0';	
+		wait for 100 ns;
+	
+		-- test carry_in
+		carry_in <= '1';
+		wait for 100 ns;
+		
+		
 
       wait;
    end process;

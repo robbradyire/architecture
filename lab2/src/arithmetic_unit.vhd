@@ -8,7 +8,7 @@ port (
 	A_in : in std_logic_vector(15 downto 0);
 	B_in : in std_logic_vector(15 downto 0);
 	sel0, sel1, carry_in : in std_logic;
-	carry_out : in std_logic;
+	carry_out : out std_logic;
 	result : out std_logic_vector(15 downto 0)
 	);
 end arithmetic_unit;
@@ -24,7 +24,7 @@ architecture Behavioral of arithmetic_unit is
 		);
 	END COMPONENT;
 	
-	signal b_input : std_logic(15 downto 0);
+	signal b_input : std_logic_vector(15 downto 0);
 	
 begin
 	-- Port Maps
