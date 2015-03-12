@@ -17,7 +17,7 @@ begin
 	begin
 		if (rising_edge(Clk)) then
 			if load_A = '1' and load_B = '1' then
-				Q<=D after 5 ns;
+				Q<=D after 1 ns;
 			end if;
 		end if;
 	end process;

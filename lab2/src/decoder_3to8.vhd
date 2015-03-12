@@ -21,12 +21,12 @@ end decoder_3to8;
 
 architecture Behavioral of decoder_3to8 is
 begin
-	Q0<= ((not S0) and (not S1) and (not S2)) after 5 ns;
-	Q1<= (S0 and (not S1) and (not S2)) after 5 ns;
-	Q2<= ((not S0) and S1 and (not S2)) after 5 ns;
-	Q3<= (S0 and S1 and (not S2)) after 5 ns;
-	Q4<= ((not S0) and (not S1) and S2) after 5 ns;
-	Q5<= (S0 and (not S1) and S2) after 5 ns;
-	Q6<= ((not S0) and S1 and S2) after 5 ns;
-	Q7<= (S0 and S1 and S2) after 5 ns;
+	Q0<= ((not S0) and (not S1) and (not S2)) after 1 ns;
+	Q1<= (S0 and (not S1) and (not S2)) after 1 ns;
+	Q2<= ((not S0) and S1 and (not S2)) after 1 ns;
+	Q3<= (S0 and S1 and (not S2)) after 1 ns;
+	Q4<= ((not S0) and (not S1) and S2) after 1 ns;
+	Q5<= (S0 and (not S1) and S2) after 1 ns;
+	Q6<= ((not S0) and S1 and S2) after 1 ns;
+	Q7<= (S0 and S1 and S2) after 1 ns;
 end Behavioral;

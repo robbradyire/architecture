@@ -47,6 +47,32 @@ BEGIN
    begin		
       wait for 100 ns;	
 
+		-- test S = "00"
+		A_input<= x"1111";
+		B_input<= x"FFFF";
+		sel0 <= '0';
+		sel1 <= '0';	
+		wait for 100 ns;
+		
+		-- test S = "01"
+		A_input<= x"1111";
+		B_input<= x"EEEE";
+		sel0 <= '1';
+		sel1 <= '0';	
+		wait for 100 ns;
+		
+		-- test S = "10"
+		A_input<= x"1111";
+		B_input<= x"FFFF";
+		sel0 <= '0';
+		sel1 <= '1';	
+		wait for 100 ns;
+		
+		-- test S = "11"
+		A_input<= x"1111";
+		sel0 <= '1';
+		sel1 <= '1';	
+		wait for 100 ns;
 
       wait;
    end process;
