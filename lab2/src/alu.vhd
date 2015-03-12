@@ -8,7 +8,7 @@ port (
 		A, B : in std_logic_vector(15 downto 0);
 		S0, S1, S2, C : in std_logic;
 		Z : out std_logic_vector(15 downto 0);
-		Co : out std_logic
+		Co, overflow : out std_logic
 	);
 end ALU;
 
@@ -45,7 +45,8 @@ architecture Behavioral of ALU is
 		);
 	END COMPONENT;
 	
-	signal arith_out, logic_out : std_logic_vector(15 downto 0);
+	signal arith_out, logic_out, zed : std_logic_vector(15 downto 0);
+	signal abit, bbit, zbit : std_logic;
 	
 begin
 
@@ -71,7 +72,12 @@ begin
 		In0 => arith_out,
 		In1 => logic_out,
 		s => S2,
-		Z => Z
+		Z => zed
 	);
-	
+	abit <= A(15);
+	bbit <= B(15);
+	zbit <= zed(15);
+	overflow <= ((abit and bbit) xor zbit) or 
+					((abit nand bbit) xor not zbit) after 1 ns;
+
 end Behavioral;
