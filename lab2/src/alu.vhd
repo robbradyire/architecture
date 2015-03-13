@@ -79,5 +79,6 @@ begin
 	zbit <= zed(15) after 1 ns;
 	overflow <= ((abit and bbit) xor zbit) or 
 					((abit nand bbit) xor not zbit) after 1 ns;
+	Z <= zed;
 
 end Behavioral;

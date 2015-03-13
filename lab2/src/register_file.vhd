@@ -5,15 +5,9 @@ use IEEE.STD_LOGIC_UNSIGNED.ALL;
 
 entity register_file is
 Port (
-		A_source_select0 : in std_logic;
-		A_source_select1 : in std_logic;
-		A_source_select2 : in std_logic;
-		B_source_select0 : in std_logic;
-		B_source_select1 : in std_logic;
-		B_source_select2 : in std_logic;
-		dest_select0 : in std_logic;
-		dest_select1 : in std_logic;
-		dest_select2 : in std_logic;
+		A_source_select : in std_logic_vector(2 downto 0);
+		B_source_select : in std_logic_vector(2 downto 0);
+		dest_select : in std_logic_vector(2 downto 0);
 		Clk : in std_logic;
 		read_write : in std_logic;
 		data_in : in std_logic_vector(15 downto 0);
@@ -154,9 +148,9 @@ architecture Behavioral of register_file is
 
 	-- Destination register decoder
 	des_decoder_3to8: decoder_3to8 PORT MAP(
-		S0 => dest_select0,
-		S1 => dest_select1,
-		S2 => dest_select2,
+		S0 => dest_select(0),
+		S1 => dest_select(1),
+		S2 => dest_select(2),
 		Q0 => load_reg0,
 		Q1 => load_reg1,
 		Q2 => load_reg2,
@@ -177,9 +171,9 @@ architecture Behavioral of register_file is
 		In5 => reg5_q,
 		In6 => reg6_q,
 		In7 => reg7_q,
-		S0 => A_source_select0,
-		S1 => A_source_select1,
-		S2 => A_source_select2,
+		S0 => A_source_select(0),
+		S1 => A_source_select(1),
+		S2 => A_source_select(2),
 		Z => A_out
 	);
 
@@ -193,9 +187,9 @@ architecture Behavioral of register_file is
 		In5 => reg5_q,
 		In6 => reg6_q,
 		In7 => reg7_q,
-		S0 => B_source_select0,
-		S1 => B_source_select1,
-		S2 => B_source_select2,
+		S0 => B_source_select(0),
+		S1 => B_source_select(1),
+		S2 => B_source_select(2),
 		Z => B_out
 	);
 
