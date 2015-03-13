@@ -49,7 +49,7 @@ architecture Behavioral of function_unit is
 	END COMPONENT;
 	
 	signal alu_carry, shifter_carry : std_logic;
-	signal alu_out, shifter_out : std_logic_vector(15 downto 0);
+	signal alu_out, shifter_out, data_buffer : std_logic_vector(15 downto 0);
 	
 begin
 	
@@ -78,12 +78,15 @@ begin
 		In0 => alu_out,
 		In1 => shifter_out,
 		s => function_sel(6),
-		Z => data_out
+		Z => data_buffer
 	);
 	
-	carry_out <= alu_carry after 1 ns when function_sel(5)='0' else
+	carry_out <= alu_carry after 1 ns when (function_sel(5) = '0') = true else
 						shifter_carry after 1 ns;
-	zero <= data_out = x"0000" after 1 ns;
-	negative <= data_out(15) = '1' after 1 ns;
+	zero <= '1' after 1 ns when data_buffer = x"0000" else
+						'1' after 1 ns;
+	negative <= '1' after 1 ns when data_buffer(15) = '1' else
+						'0' after 1 ns;
+	data_out <= data_buffer;
 	
 end Behavioral;

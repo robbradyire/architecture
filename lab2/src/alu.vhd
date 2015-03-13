@@ -74,10 +74,11 @@ begin
 		s => S2,
 		Z => zed
 	);
-	abit <= A(15);
-	bbit <= B(15);
-	zbit <= zed(15);
+	abit <= A(15) after 1 ns;
+	bbit <= B(15) after 1 ns;
+	zbit <= zed(15) after 1 ns;
 	overflow <= ((abit and bbit) xor zbit) or 
 					((abit nand bbit) xor not zbit) after 1 ns;
+	Z <= zed;
 
 end Behavioral;
